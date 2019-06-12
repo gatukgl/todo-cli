@@ -1,5 +1,12 @@
 import json
-from PyInquirer import prompt, print_json
+
+import click
+from PyInquirer import prompt
+
+
+@click.group()
+def cli():
+    pass
 
 
 def get_todos_from_file():
@@ -7,12 +14,8 @@ def get_todos_from_file():
         return json.load(todos_file)
 
 
-def write_todo_to_file(todo):
-    print(todo)
-    todos = get_todos_from_file()
-    print(todos)
+def write_todo_to_file(todos):
     with open('todos.json', 'w') as todos_file:
-        todos.append(todo)
         json.dump(todos, todos_file)
 
 
@@ -44,9 +47,11 @@ def update_todos_with_done_list(done_list):
         for item in todos:
             if item['task'] == each:
                 item['is_done'] = True
+    return todos
 
 
-def list_todos():
+@cli.command()
+def list():
     todos = get_todos_from_file()
 
     if len(todos) == 0:
@@ -61,7 +66,8 @@ def list_todos():
         print('These are all your to do for today')
 
         answers = prompt(question_choices)
-        update_todos_with_done_list(answers['done_list'])
+        updated_todos = update_todos_with_done_list(answers['done_list'])
+        write_todo_to_file(updated_todos)
 
         print('You\'ve updated todo list!')
 
@@ -72,7 +78,8 @@ def list_todos():
                 print(f'⭕️ {each["task"]}')
 
 
-def add_todo():
+@cli.command()
+def add():
     questions = [
         {
             'type': 'input',
@@ -88,5 +95,13 @@ def add_todo():
 
     answers = prompt(questions)
     answers['is_done'] = False
-    write_todo_to_file(answers)
+
+    todos = get_todos_from_file() or []
+    todos.append(answers)
+    write_todo_to_file(todos)
+
     print(f'🔮 You added {answers["task"]} and it need to be done {answers["due_date"]}')
+
+
+if __name__ == '__main__':
+    cli()
