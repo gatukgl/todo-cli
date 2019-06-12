@@ -34,19 +34,21 @@ def clear_todos_state(todos):
     result = []
     for each in todos:
         result.append({
-            'name': each['task'],
-            'checked': False
+            'task': each['task'],
+            'due_date': each['due_date'],
+            'is_done': False
         })
     return result
 
 
 def update_todos_with_done_list(done_list):
     todos = get_todos_from_file()
-    cleared_todos = clear_todos_state(todos)
+    todos = clear_todos_state(todos)
     for each in done_list:
         for item in todos:
             if item['task'] == each:
                 item['is_done'] = True
+                print('update', each)
     return todos
 
 
@@ -69,13 +71,13 @@ def list():
         updated_todos = update_todos_with_done_list(answers['done_list'])
         write_todo_to_file(updated_todos)
 
-        print('You\'ve updated todo list!')
-
-        for each in todos:
+        for each in updated_todos:
             if each['is_done']:
                 print(f'✅ {each["task"]}')
             else:
                 print(f'⭕️ {each["task"]}')
+
+        print('You\'ve updated todo list!')
 
 
 @cli.command()
