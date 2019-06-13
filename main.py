@@ -90,7 +90,7 @@ def add():
         {
             'type': 'input',
             'name': 'task',
-            'message': 'What is my task?",
+            'message': 'What is my task?',
         },
         {
             'type': 'input',
