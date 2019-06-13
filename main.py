@@ -43,10 +43,9 @@ def reset_todos_state(todos):
 def update_todos_with(done_list):
     todos = get_todos_from_file()
     todos = reset_todos_state(todos)
-    for each in done_list:
-        for item in todos:
-            if item['name'] == each:
-                item['checked'] = True
+    for item in todos:
+        if item['name'] in done_list:
+            item['checked'] = True
 
     return todos
 
