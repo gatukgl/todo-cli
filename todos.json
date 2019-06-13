@@ -1,1 +1,1 @@
-[{"task": "Go to the market to buy some fruits", "due_date": "16 June 2019", "is_done": false}]
+[{"name": "Go to the market to buy some fruits", "due_date": "16 June 2019", "checked": true}, {"name": "Finish refactoring", "due_date": "today", "checked": true}, {"name": "Help Gatuk", "due_date": "now", "checked": true}, {"name": "Try to finish", "due_date": "right away", "checked": false}]
