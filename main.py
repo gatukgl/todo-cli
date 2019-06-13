@@ -90,12 +90,12 @@ def add():
         {
             'type': 'input',
             'name': 'task',
-            'message': f"What's your task?",
+            'message': 'What is my task?",
         },
         {
             'type': 'input',
             'name': 'due_date',
-            'message': 'When it need to be done?',
+            'message': 'When it should be done?',
         }
     ]
 
