@@ -32,25 +32,22 @@ def remove_due_date_from_item_in(todos):
     return new_todos
 
 
-def clear_todos_state(todos):
-    result = []
-    for each in todos:
-        result.append({
-            'name': each['name'],
-            'due_date': each['due_date'],
-            'checked': False
-        })
-    return result
+def reset_todos_state(todos):
+    new_todos = copy.deepcopy(todos)
+    for each in new_todos:
+        each['checked'] = False
+
+    return new_todos
 
 
-def update_todos_with_done_list(done_list):
+def update_todos_with(done_list):
     todos = get_todos_from_file()
-    todos = clear_todos_state(todos)
+    todos = reset_todos_state(todos)
     for each in done_list:
         for item in todos:
             if item['name'] == each:
                 item['checked'] = True
-                print('update', each)
+
     return todos
 
 
@@ -70,7 +67,7 @@ def list():
         print('These are all your to do for today')
 
         answers = prompt(question_choices)
-        updated_todos = update_todos_with_done_list(answers['done_list'])
+        updated_todos = update_todos_with(answers['done_list'])
         write_todo_to_file(updated_todos)
 
         for each in updated_todos:
