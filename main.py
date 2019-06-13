@@ -11,7 +11,11 @@ def cli():
 
 def get_todos_from_file():
     with open('todos.json', 'r') as todos_file:
-        return json.load(todos_file)
+        try:
+            result = json.load(todos_file)
+        except:
+            result = []
+        return result
 
 
 def write_todo_to_file(todos):
@@ -98,7 +102,7 @@ def add():
     answers = prompt(questions)
     answers['is_done'] = False
 
-    todos = get_todos_from_file() or []
+    todos = get_todos_from_file()
     todos.append(answers)
     write_todo_to_file(todos)
 
