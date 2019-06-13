@@ -73,9 +73,9 @@ def list():
 
         for each in updated_todos:
             if each['is_done']:
-                print(f'✅ {each["task"]}')
+                print(f'✅ {each["task"]}. It will be due at {each["due_date"]}')
             else:
-                print(f'⭕️ {each["task"]}')
+                print(f'⭕️ {each["task"]}. It will be due at {each["due_date"]}')
 
         print('You\'ve updated todo list!')
 
