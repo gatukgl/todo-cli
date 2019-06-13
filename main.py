@@ -1,3 +1,4 @@
+import copy
 import json
 
 import click
@@ -23,24 +24,21 @@ def write_todo_to_file(todos):
         json.dump(todos, todos_file)
 
 
-def transform_todo_to_question_checkbox(todos):
-    result = []
-    for each in todos:
-        result.append({
-            'name': each['task'],
-            'checked': each['is_done']
-        })
+def remove_due_date_from_item_in(todos):
+    new_todos = copy.deepcopy(todos)
+    for each in new_todos:
+        del each['due_date']
 
-    return result
+    return new_todos
 
 
 def clear_todos_state(todos):
     result = []
     for each in todos:
         result.append({
-            'task': each['task'],
+            'name': each['name'],
             'due_date': each['due_date'],
-            'is_done': False
+            'checked': False
         })
     return result
 
@@ -50,8 +48,8 @@ def update_todos_with_done_list(done_list):
     todos = clear_todos_state(todos)
     for each in done_list:
         for item in todos:
-            if item['task'] == each:
-                item['is_done'] = True
+            if item['name'] == each:
+                item['checked'] = True
                 print('update', each)
     return todos
 
@@ -67,7 +65,7 @@ def list():
             'type': 'checkbox',
             'name': 'done_list',
             'message': 'Todo List',
-            'choices': transform_todo_to_question_checkbox(todos)
+            'choices': remove_due_date_from_item_in(todos)
         }
         print('These are all your to do for today')
 
@@ -76,10 +74,10 @@ def list():
         write_todo_to_file(updated_todos)
 
         for each in updated_todos:
-            if each['is_done']:
-                print(f'✅ {each["task"]}. It will be due at {each["due_date"]}')
+            if each['checked']:
+                print(f'✅ {each["name"]}. It will be due at {each["due_date"]}')
             else:
-                print(f'⭕️ {each["task"]}. It will be due at {each["due_date"]}')
+                print(f'⭕️ {each["name"]}. It will be due at {each["due_date"]}')
 
         print('You\'ve updated todo list!')
 
@@ -89,7 +87,7 @@ def add():
     questions = [
         {
             'type': 'input',
-            'name': 'task',
+            'name': 'name',
             'message': 'What is my task?',
         },
         {
@@ -100,13 +98,13 @@ def add():
     ]
 
     answers = prompt(questions)
-    answers['is_done'] = False
+    answers['checked'] = False
 
     todos = get_todos_from_file()
     todos.append(answers)
     write_todo_to_file(todos)
 
-    print(f'🔮 You added {answers["task"]} and it need to be done {answers["due_date"]}')
+    print(f'🔮 You added {answers["name"]} and it need to be done {answers["due_date"]}')
 
 
 if __name__ == '__main__':
