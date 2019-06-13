@@ -71,9 +71,11 @@ def list():
 
         for each in updated_todos:
             if each['checked']:
-                print(f'✅ {each["name"]}. It will be due at {each["due_date"]}')
+                print(f'✅', end='')
             else:
-                print(f'⭕️ {each["name"]}. It will be due at {each["due_date"]}')
+                print(f'⭕️', end='')
+
+            print(f' {each["name"]}. It will be due at {each["due_date"]}')
 
         print('You\'ve updated todo list!')
 
